@@ -8,19 +8,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.service.ServiceRegistry;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
-/**
- * @author v.chibrikov
- *         <p>
- *         Пример кода для курса на https://stepic.org/
- *         <p>
- *         Описание курса и лицензия: https://github.com/vitaly-chibrikov/stepic_java_webserver
- */
 public class DBService {
     private static final String hibernate_show_sql = "true";
     private static final String hibernate_hbm2ddl_auto = "create";
@@ -61,7 +50,6 @@ public class DBService {
         return configuration;
     }
 
-
     public UsersDataSet getUser(long id) throws DBException {
         try {
             Session session = sessionFactory.openSession();
@@ -89,15 +77,13 @@ public class DBService {
     }
 
     public void printConnectInfo() {
-        try {
-            SessionFactoryImpl sessionFactoryImpl = (SessionFactoryImpl) sessionFactory;
-            Connection connection = sessionFactoryImpl.getConnectionProvider().getConnection();
-            System.out.println("DB name: " + connection.getMetaData().getDatabaseProductName());
-            System.out.println("DB version: " + connection.getMetaData().getDatabaseProductVersion());
-            System.out.println("Driver: " + connection.getMetaData().getDriverName());
-            System.out.println("Autocommit: " + connection.getAutoCommit());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        try (Session session = sessionFactory.openSession()) {
+            session.doWork(connection -> {
+                System.out.println("DB name: " + connection.getMetaData().getDatabaseProductName());
+                System.out.println("DB version: " + connection.getMetaData().getDatabaseProductVersion());
+                System.out.println("Driver: " + connection.getMetaData().getDriverName());
+                System.out.println("Autocommit: " + connection.getAutoCommit());
+            });
         }
     }
 
