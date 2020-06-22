@@ -17,9 +17,9 @@ public class AccountService {
         dbService.createUsersTable();
     }
 
-    public long addNewUser(UserProfile userProfile) {
+    public void addNewUser(UserProfile userProfile) {
         try (Session session = dbService.getSession()) {
-            return (Long) session.save(userProfile);
+            session.save(userProfile);
         }
     }
 

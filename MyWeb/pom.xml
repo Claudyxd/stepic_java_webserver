@@ -20,6 +20,7 @@
         <mysql.mysql-connector-java.version>8.0.20</mysql.mysql-connector-java.version>
         <org.hibernate.hibernate-core.version>5.4.7.Final</org.hibernate.hibernate-core.version>
         <org.eclipse.jetty.version>9.3.0.M0</org.eclipse.jetty.version>
+        <org.apache.logging.log4j.version>2.2</org.apache.logging.log4j.version>
     </properties>
 
     <dependencies>
@@ -60,6 +61,11 @@
             <groupId>org.eclipse.jetty.websocket</groupId>
             <artifactId>websocket-servlet</artifactId>
             <version>${org.eclipse.jetty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${org.apache.logging.log4j.version}</version>
         </dependency>
     </dependencies>
 
