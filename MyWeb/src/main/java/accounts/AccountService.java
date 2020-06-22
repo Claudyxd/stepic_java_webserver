@@ -1,7 +1,7 @@
 package accounts;
 
 import dbServices.DBService;
-import org.hibernate.HibernateException;
+import dbServices.DBServiceImpl;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -13,7 +13,7 @@ public class AccountService {
     private final DBService dbService;
 
     public AccountService() {
-        dbService = new DBService();
+        dbService = DBServiceImpl.getDBService();
         dbService.createUsersTable();
     }
 
@@ -23,28 +23,25 @@ public class AccountService {
         }
     }
 
-    public UserProfile getUserByLogin(String login) throws HibernateException {
-        try (Session session = dbService.getSession()) {
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<UserProfile> criteria = builder.createQuery(UserProfile.class);
-            Root<UserProfile> root = criteria.from(UserProfile.class);
-            criteria.select(root).where(builder.equal(root.get("login"), login));
-            Query<UserProfile> query = session.createQuery(criteria);
-            return query.getResultList().size() == 0 ? null : query.getSingleResult();
-        } catch (HibernateException e) {
-            throw new HibernateException(e);
-        }
+    public UserProfile getUserByLogin(String login) {
+        Session session = dbService.getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<UserProfile> criteria = builder.createQuery(UserProfile.class);
+        Root<UserProfile> root = criteria.from(UserProfile.class);
+        criteria.select(root).where(builder.equal(root.get("login"), login));
+        Query<UserProfile> query = session.createQuery(criteria);
+        return query.getResultList().isEmpty() ? null : query.getSingleResult();
     }
 
-//    public UserProfile getUserBySessionId(String sessionId) {
-//        return sessionIdToProfile.get(sessionId);
-//    }
+    //    public UserProfile getUserBySessionId(String sessionId) {
+    //        return sessionIdToProfile.get(sessionId);
+    //    }
 
-//    public void addSession(String sessionId, UserProfile userProfile) {
-//        sessionIdToProfile.put(sessionId, userProfile);
-//    }
+    //    public void addSession(String sessionId, UserProfile userProfile) {
+    //        sessionIdToProfile.put(sessionId, userProfile);
+    //    }
 
-//    public void deleteSession(String sessionId) {
-//        sessionIdToProfile.remove(sessionId);
-//    }
+    //    public void deleteSession(String sessionId) {
+    //        sessionIdToProfile.remove(sessionId);
+    //    }
 }
