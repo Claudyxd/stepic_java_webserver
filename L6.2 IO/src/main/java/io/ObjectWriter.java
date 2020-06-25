@@ -7,20 +7,20 @@ import java.io.*;
  */
 public class ObjectWriter {
     public static void main(String[] args) {
-        stringExample();
+//        stringExample();
         descriptorExample();
     }
 
     private static void stringExample() {
-        write("Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn", "./string.bin");
-        String fromFile = (String) read("./string.bin");
+        write("Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn", "L6.2 IO/string.bin");
+        String fromFile = (String) read("L6.2 IO/string.bin");
         System.out.println(fromFile);
     }
 
     private static void descriptorExample() {
         Descriptor descriptor = new Descriptor("Anna", 15);
-        write(descriptor, "./descriptor.bin");
-        Descriptor fromFile = (Descriptor) read("./descriptor.bin");
+        write(descriptor, "L6.2 IO/descriptor.bin");
+        Descriptor fromFile = (Descriptor) read("L6.2 IO/descriptor.bin");
         System.out.println(fromFile);
     }
 
